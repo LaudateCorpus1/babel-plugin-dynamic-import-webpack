@@ -2,9 +2,13 @@ import template from 'babel-template';
 import syntax from 'babel-plugin-syntax-dynamic-import';
 
 const buildImport = template(`
-  (new Promise((resolve) => {
+  (new Promise((resolve, reject) => {
     require.ensure([], (require) => {
-      resolve(require(SOURCE));
+      try {
+        resolve(require(SOURCE));
+      } catch (err) {
+        reject(err);
+      }
     });
   }))
 `);
